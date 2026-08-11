@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>JavisCoach & Fitness AI - Clean & Easy Mobile Dashboard</title>
+  <meta name="description" content="JavisCoach & Fitness AI - โค้ชส่วนตัวใช้งานง่าย เลือกเปลี่ยนธีมสว่าง/มืดได้ตามใจชอบ">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-light">
+
+  <div class="app-viewport">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-title">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <h1>JavisCoach AI</h1>
+          <span>Fitness & Nutrition Dashboard</span>
+        </div>
+      </div>
+
+      <!-- Theme Switcher Selector Pill -->
+      <div class="header-actions">
+        <div class="theme-selector" title="เลือกธีมการแสดงผล">
+          <button class="theme-btn active" id="theme-btn-light" onclick="setTheme('light')" title="ธีมสว่าง (Clean Light)">☀️</button>
+          <button class="theme-btn" id="theme-btn-ocean" onclick="setTheme('ocean')" title="ธีมฟ้าพาสเทล (Soft Ocean)">🌊</button>
+          <button class="theme-btn" id="theme-btn-dark" onclick="setTheme('dark')" title="ธีมมืด (Dark Mode)">🌙</button>
+        </div>
+
+        <button class="btn-icon" onclick="openModal('modal-references')" title="แหล่งข้อมูลอ้างอิงทางวิทยาศาสตร์">ℹ️</button>
+        <button class="btn-icon" onclick="openModal('modal-profile')" title="แก้ไขสัดส่วนส่วนตัว">⚙️</button>
+        <button class="btn-icon" onclick="openModal('modal-export')" title="คัดลอกข้อความMobile Dashboard">📋</button>
+      </div>
+    </header>
+
+    <!-- Guided Onboarding Step Bar -->
+    <div class="step-guide-bar">
+      <div class="step-item active" id="step-1" onclick="switchTab('tab-dashboard')">
+        <div class="step-num">1</div>
+        <span>สรุปเป้าหมาย</span>
+      </div>
+      <div class="step-item" id="step-2" onclick="switchTab('tab-workout')">
+        <div class="step-num">2</div>
+        <span>ตารางออกกำลัง</span>
+      </div>
+      <div class="step-item" id="step-3" onclick="switchTab('tab-nutrition')">
+        <div class="step-num">3</div>
+        <span>บันทึกอาหาร</span>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="app-nav">
+      <button class="nav-tab active" onclick="switchTab('tab-dashboard')">
+        <span class="icon">📊</span>
+        <span>หน้าหลัก</span>
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-workout')">
+        <span class="icon">🏋️‍♂️</span>
+        <span>ออกกำลังกาย</span>
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-nutrition')">
+        <span class="icon">🥗</span>
+        <span>บันทึกอาหาร</span>
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-ask')">
+        <span class="icon">💡</span>
+        <span>ถามโค้ช</span>
+      </button>
+      <button class="nav-tab" onclick="switchTab('tab-library')">
+        <span class="icon">📚</span>
+        <span>คลังท่าทั้งหมด</span>
+      </button>
+    </nav>
+
+    <!-- Main Content Panes -->
+    <main class="main-content">
+
+      <!-- TAB 1: DASHBOARD OVERVIEW -->
+      <div id="tab-dashboard" class="tab-pane active">
+        
+        <!-- User Greeting & Quick Metrics -->
+        <div class="glass-card">
+          <div class="card-title">
+            <span>👋</span> สวัสดีครับ! ยินดีต้อนรับสู่ JavisCoach
+          </div>
+          <p style="font-size:0.82rem; color:var(--text-sub); margin-top:4px;">
+            วิเคราะห์เป้าหมายและคำนวณโภชนาการที่เหมาะสมกับคุณเรียบร้อยครับ:
+          </p>
+
+          <div class="user-quick-stats">
+            <div class="stat-box">
+              <div class="val" id="user-bmi">22.9</div>
+              <div class="lbl">BMI (สมส่วน)</div>
+            </div>
+            <div class="stat-box">
+              <div class="val" id="user-bmr">1,620</div>
+              <div class="lbl">BMR (kcal)</div>
+            </div>
+            <div class="stat-box">
+              <div class="val" id="user-tdee">2,450</div>
+              <div class="lbl">TDEE (kcal)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Big Hero Quick Action: Food Scanner -->
+        <div class="hero-action-card" onclick="openModal('modal-food-scanner')">
+          <div class="hero-text">
+            <h3>📸 บันทึกมื้ออาหารวันนี้</h3>
+            <p>เลือกเมนูซื้อง่าย หรือพิมพ์ชื่ออาหารให้ AI คำนวณแคลอรี</p>
+          </div>
+          <div class="hero-btn-arrow">+</div>
+        </div>
+
+        <!-- Today's Calorie Progress -->
+        <div class="glass-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>📊</span> TODAY'S DASHBOARD
+            </div>
+            <span class="badge">พลังงานวันนี้</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+            <div>
+              <span style="font-size:0.78rem; color:var(--text-muted);">เป้าหมายแคลอรีประจำวัน</span>
+              <div class="stat-huge"><span id="display-logged-cal">0</span> / <span id="display-target-cal">2,000</span> <span style="font-size:1rem; font-weight:500;">kcal</span></div>
+            </div>
+            <button class="btn-secondary" style="font-size:0.75rem; padding:4px 8px; color:var(--accent-rose);" onclick="resetTodayMeals()" title="รีเซ็ตแคลอรีที่กินวันนี้เป็น 0">
+              🔄 รีเซ็ตแคลวันนี้
+            </button>
+          </div>
+
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="cal-progress-bar" style="width: 35.5%;"></div>
+          </div>
+
+          <!-- Macros Grid -->
+          <div class="macro-grid">
+            <div class="macro-card protein">
+              <div class="macro-title">โปรตีน (P)</div>
+              <div class="macro-val" id="protein-logged">54 / 140g</div>
+              <div class="macro-bar-bg"><div class="macro-bar-fill" id="protein-bar" style="width: 38%;"></div></div>
+            </div>
+
+            <div class="macro-card carbs">
+              <div class="macro-title">คาร์บ (C)</div>
+              <div class="macro-val" id="carbs-logged">79 / 200g</div>
+              <div class="macro-bar-bg"><div class="macro-bar-fill" id="carbs-bar" style="width: 39%;"></div></div>
+            </div>
+
+            <div class="macro-card fat">
+              <div class="macro-title">ไขมัน (F)</div>
+              <div class="macro-val" id="fat-logged">16 / 55g</div>
+              <div class="macro-bar-bg"><div class="macro-bar-fill" id="fat-bar" style="width: 29%;"></div></div>
+            </div>
+          </div>
+
+          <!-- Dynamic End-of-Day Calorie Guidance Banner -->
+          <div id="end-of-day-guidance" style="margin-top:12px; padding:12px; border-radius:var(--radius-md); background:var(--bg-subcard); border:1px solid var(--border-color); font-size:0.8rem; line-height:1.5;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Smart Tip -->
+        <div class="glass-card" style="background:var(--primary-glow); border-color:var(--primary);">
+          <div class="card-title" style="color:var(--primary);">
+            💡 SMART TIP ประจำวัน
+          </div>
+          <p style="font-size:0.82rem; color:var(--text-main); margin-top:4px;">
+            ดื่มน้ำเปล่าอย่างน้อย 2.5-3 ลิตรต่อวัน เพื่อช่วยเร่งการเผาผลาญไขมันและช่วยให้กล้ามเนื้อฟื้นตัวได้ไวขึ้นครับ!
+          </p>
+        </div>
+
+        <!-- Motivational Quote Banner -->
+        <div class="motive-banner">
+          💙 "วินัยที่สม่ำเสมอในทุกๆ วัน คือกุญแจสำคัญสู่หุ่นที่ดีขึ้นครับ!"
+        </div>
+
+      </div>
+
+      <!-- TAB 2: WORKOUT PROGRAM -->
+      <div id="tab-workout" class="tab-pane">
+        <div class="glass-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>🏋️‍♂️</span> WORKOUT PROGRAM
+            </div>
+            <span class="badge">ตารางสัปดาห์นี้</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-sub); margin-bottom:10px;">
+            👇 แตะที่รายการเพื่อติ๊กถูก เมื่อออกกำลังกายท่าใดเสร็จสิ้น:
+          </p>
+
+          <!-- Dynamic Workout BMR & TDEE Calibration Info Banner -->
+          <div id="workout-tdee-calibration-info" style="background:var(--bg-subcard); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:10px 12px; font-size:0.78rem; margin-bottom:12px; line-height:1.5;">
+            <!-- Populated dynamically by JS -->
+          </div>
+
+          <div id="workout-schedule-container"></div>
+        </div>
+      </div>
+
+      <!-- TAB 3: NUTRITION & MEAL TRACKER -->
+      <div id="tab-nutrition" class="tab-pane">
+        <div class="glass-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>🥗</span> MEAL PLAN & TRACKER
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="btn-secondary" style="font-size:0.75rem; padding:4px 8px; color:var(--accent-rose);" onclick="resetTodayMeals()">
+                🔄 รีเซ็ตแคล
+              </button>
+              <button class="btn-primary" style="width:auto; padding:6px 14px; font-size:0.8rem;" onclick="openModal('modal-food-scanner')">
+                + เพิ่มอาหาร
+              </button>
+            </div>
+          </div>
+
+          <div id="today-meals-container"></div>
+        </div>
+      </div>
+
+      <!-- TAB 4: AI SMART COACH QA -->
+      <div id="tab-ask" class="tab-pane">
+        <div class="glass-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>💡</span> ถามโค้ช ("วันนี้กินอะไรดี?")
+            </div>
+          </div>
+
+          <div class="chat-container" id="chat-container">
+            <div class="chat-bubble coach">
+              สวัสดีครับ! ผมโค้ช JavisCoach AI มีไอเดียเมนูสุขภาพหาซื้อง่าย (7-Eleven / ร้านตามสั่ง / ทำเอง) ที่เหมาะกับโควตาแคลอรีที่ยังขาดของคุณวันนี้ พิมพ์ถามผมได้เลยครับ!
+            </div>
+          </div>
+
+          <div style="margin-top:10px; display:flex; gap:6px;">
+            <input type="text" id="coach-input" class="form-input" placeholder="พิมพ์ถามโค้ช เช่น 'วันนี้กินอะไรดี?'" onkeydown="if(event.key==='Enter') askSmartCoach()">
+            <button class="btn-primary" style="width:auto; padding:0 16px;" onclick="askSmartCoach()">ส่ง</button>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:6px; overflow-x:auto;">
+          <button class="btn-secondary" style="font-size:0.75rem; white-space:nowrap;" onclick="document.getElementById('coach-input').value='ปลายวันแคลยังขาด ควรกินเพิ่มไหม?'; askSmartCoach();">🌙 ปลายวันแคลขาดควรกินเพิ่มไหม?</button>
+          <button class="btn-secondary" style="font-size:0.75rem; white-space:nowrap;" onclick="document.getElementById('coach-input').value='วันนี้กินอะไรดี?'; askSmartCoach();">🍱 วันนี้กินอะไรดี?</button>
+          <button class="btn-secondary" style="font-size:0.75rem; white-space:nowrap;" onclick="document.getElementById('coach-input').value='เมนู 7-Eleven โปรตีนสูง'; askSmartCoach();">🏪 เมนู 7-Eleven</button>
+          <button class="btn-secondary" style="font-size:0.75rem; white-space:nowrap;" onclick="document.getElementById('coach-input').value='ข้อจำกัดปวดเข่าทำยังไง'; askSmartCoach();">🩺 ปวดเข่าทำไง</button>
+        </div>
+      </div>
+
+      <!-- TAB 5: EXERCISE LIBRARY & CATALOG -->
+      <div id="tab-library" class="tab-pane">
+        <div class="glass-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>📚</span> คลังท่าออกกำลังกายทั้งหมด (Exercise Library)
+            </div>
+            <span class="badge" id="library-count-badge">28 ท่าทั้งหมด</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-sub); margin-bottom:12px;">
+            รวบรวมรูปภาพ ภาพเคลื่อนไหว GIF กล้ามเนื้อหลัก และขั้นตอนการเล่นอย่างถูกต้อง แยกตามหมวดหมู่ร่างกาย
+          </p>
+
+          <!-- Search Bar & Filters -->
+          <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+            <input type="text" id="library-search-input" placeholder="🔍 ค้นหาชื่อท่า หรือมัดกล้ามเนื้อ (เช่น สควอท, หน้าแขน, อก)..." 
+                   oninput="filterLibraryBySearch()" 
+                   style="flex:1; min-width:200px; padding:8px 12px; border-radius:var(--radius-md); border:1px solid var(--border-color); background:var(--bg-input); color:var(--text-main); font-size:0.85rem;">
+          </div>
+
+          <!-- Category Filter Buttons -->
+          <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:14px; scrollbar-width:none;">
+            <button class="btn-secondary lib-cat-btn active" onclick="filterLibraryCategory('all')" id="lib-cat-all" style="font-size:0.75rem; white-space:nowrap;">🌐 ทั้งหมด</button>
+            <button class="btn-secondary lib-cat-btn" onclick="filterLibraryCategory('chest')" id="lib-cat-chest" style="font-size:0.75rem; white-space:nowrap;">🏋️‍♂️ หน้าอก (Chest)</button>
+            <button class="btn-secondary lib-cat-btn" onclick="filterLibraryCategory('arms')" id="lib-cat-arms" style="font-size:0.75rem; white-space:nowrap;">💪 แขน (Arms)</button>
+            <button class="btn-secondary lib-cat-btn" onclick="filterLibraryCategory('legs')" id="lib-cat-legs" style="font-size:0.75rem; white-space:nowrap;">🦵 ขา & ก้น (Legs & Glutes)</button>
+            <button class="btn-secondary lib-cat-btn" onclick="filterLibraryCategory('shoulders_back')" id="lib-cat-shoulders_back" style="font-size:0.75rem; white-space:nowrap;">🛡️ ไหล่ & หลัง (Shoulders & Back)</button>
+            <button class="btn-secondary lib-cat-btn" onclick="filterLibraryCategory('core')" id="lib-cat-core" style="font-size:0.75rem; white-space:nowrap;">🧘‍♂️ แกนกลางลำตัว (Core)</button>
+            <button class="btn-secondary lib-cat-btn" onclick="filterLibraryCategory('cardio_rest')" id="lib-cat-cardio_rest" style="font-size:0.75rem; white-space:nowrap;">🏃‍♂️ คาร์ดิโอ & พักผ่อน</button>
+          </div>
+
+          <!-- Library Grid Container -->
+          <div id="exercise-library-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:14px;">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL 1: USER PROFILE -->
+  <div class="modal-overlay" id="modal-profile">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ ตั้งค่าส่วนตัว & คำนวณ BMR/TDEE</div>
+        <button class="btn-icon" onclick="closeModal('modal-profile')">✕</button>
+      </div>
+
+      <form onsubmit="saveUserProfile(event)">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">เพศ</label>
+            <select id="form-gender" class="form-select">
+              <option value="male">ชาย</option>
+              <option value="female">หญิง</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">อายุ (ปี)</label>
+            <input type="number" id="form-age" class="form-input" value="28">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">น้ำหนัก (กก.)</label>
+            <input type="number" id="form-weight" class="form-input" value="70" step="0.1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">ส่วนสูง (ซม.)</label>
+            <input type="number" id="form-height" class="form-input" value="175">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">ระดับการออกกำลังกาย</label>
+          <select id="form-activity" class="form-select">
+            <option value="1.2">นั่งทำงานเป็นหลัก (1.2)</option>
+            <option value="1.375">เบาๆ 1-3 วัน/สัปดาห์ (1.375)</option>
+            <option value="1.55" selected>ปานกลาง 3-5 วัน/สัปดาห์ (1.55)</option>
+            <option value="1.725">หนัก 6-7 วัน/สัปดาห์ (1.725)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">เป้าหมายหลัก</label>
+          <select id="form-goal" class="form-select">
+            <option value="fat_loss">ลดน้ำหนัก / เผาผลาญไขมัน</option>
+            <option value="muscle_gain">สร้างกล้ามเนื้อ / เพิ่มมวล</option>
+            <option value="toning">กระชับหุ่น / สัดส่วนเป๊ะ</option>
+            <option value="health">เพื่อสุขภาพและความฟิต</option>
+          </select>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">ข้อจำกัดร่างกาย</label>
+            <select id="form-constraints" class="form-select">
+              <option value="none">ไม่มีข้อจำกัด</option>
+              <option value="knee_pain" selected>ปวดเข่า (เลี่ยงกระแทก)</option>
+              <option value="back_pain">ปวดหลัง (เลี่ยงยกหนัก)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">อุปกรณ์ที่มี</label>
+            <select id="form-equipment" class="form-select">
+              <option value="bodyweight">Bodyweight (มือเปล่า)</option>
+              <option value="dumbbells" selected>ดัมเบล / ยางยืด</option>
+              <option value="gym">ฟิตเนส (Full Gym)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">วันออกกำลังกาย/สัปดาห์</label>
+            <select id="form-days" class="form-select">
+              <option value="3">3 วัน/สัปดาห์</option>
+              <option value="4" selected>4 วัน/สัปดาห์</option>
+              <option value="5">5 วัน/สัปดาห์</option>
+              <option value="6">6 วัน/สัปดาห์</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ข้อจำกัดอาหาร</label>
+            <select id="form-dietary" class="form-select">
+              <option value="none">ทานได้ทุกอย่าง</option>
+              <option value="no_beef">ไม่ทานเนื้อวัว</option>
+              <option value="vegetarian">ทานเจ / มังสวิรัติ</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Real-time Live Calculation Preview Badge -->
+        <div id="modal-live-preview" style="background:var(--primary-glow); border:1px solid var(--primary); padding:10px; border-radius:var(--radius-md); font-size:0.78rem; margin:10px 0; color:var(--text-main);">
+          ⚡ <strong>ผลคำนวณสด:</strong> BMI, BMR, TDEE และเป้าหมายแคลอรีจะแสดงที่นี่
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top:8px;">บันทึก & คำนวณใหม่</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: FOOD SCANNER -->
+  <div class="modal-overlay" id="modal-food-scanner">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">📸 บันทึกแคลอรีอาหาร & สารอาหาร</div>
+        <button class="btn-icon" onclick="closeModal('modal-food-scanner')">✕</button>
+      </div>
+
+      <!-- Mode Switcher Tabs -->
+      <div style="display:flex; gap:6px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
+        <button class="btn-secondary active" id="food-tab-btn-auto" onclick="switchFoodModalTab('auto')" style="flex:1; font-size:0.75rem;">🤖 AI วิเคราะห์ / เมนูแนะนำ</button>
+        <button class="btn-secondary" id="food-tab-btn-manual" onclick="switchFoodModalTab('manual')" style="flex:1; font-size:0.75rem;">✏️ กรอกแคล & สารอาหารเอง</button>
+      </div>
+
+      <!-- MODE A: AUTO / PRESETS -->
+      <div id="food-modal-pane-auto">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">เลือกมื้ออาหาร</label>
+            <select id="custom-food-slot" class="form-select">
+              <option value="เช้า">มื้อเช้า 🌅</option>
+              <option value="เที่ยง" selected>มื้อเที่ยง ☀️</option>
+              <option value="เย็น">มื้อเย็น 🌙</option>
+              <option value="มื้อย่อย">มื้อย่อย 🥑</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">ลักษณะการทำ / ระดับน้ำมัน</label>
+            <select id="custom-food-style" class="form-select">
+              <option value="street" selected>🍳 ร้านตามสั่งทั่วไป (น้ำมันท่วม/ทอด/ข้าวเยอะ)</option>
+              <option value="clean">🥗 เมนูสุขภาพ / คลีนสั่งพิเศษ (น้ำมันน้อย/ใช้น้ำผัด)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">พิมพ์ระบุสิ่งที่กิน (AI วิเคราะห์แคลอรีให้อัตโนมัติ)</label>
+          <div style="display:flex; gap:6px;">
+            <input type="text" id="custom-food-text" class="form-input" placeholder="เช่น 'ข้าวกะเพราหมูกรอบ ไข่ดาว', 'กล้วยหอม 1 ลูก'">
+            <button class="btn-primary" style="width:auto; padding:0 14px;" onclick="analyzeCustomFood()">คำนวณ</button>
+          </div>
+        </div>
+
+        <!-- Category Preset Switcher -->
+        <div style="margin-top:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label class="form-label" style="margin:0;">เลือกเมนูพบบ่อย 1-Click:</label>
+            <div style="display:flex; gap:4px;">
+              <button class="btn-secondary active" id="food-cat-btn-main" onclick="switchFoodCategory('main')" style="font-size:0.7rem; padding:2px 8px;">🍱 อาหารหลัก</button>
+              <button class="btn-secondary" id="food-cat-btn-fruit" onclick="switchFoodCategory('fruit')" style="font-size:0.7rem; padding:2px 8px;">🍌 ผลไม้สด</button>
+            </div>
+          </div>
+
+          <!-- Main Meals Presets Grid -->
+          <div id="preset-grid-main" class="food-preset-grid">
+            <div class="preset-card" onclick="selectPresetFood('กะเพราหมูสับ/ไก่ ไข่ดาว (ร้านตามสั่งทั่วไป)', 650, 26, 60, 28)">
+              <span style="font-size:22px;">🍳</span>
+              <div>
+                <div class="preset-title">กะเพราไข่ดาว (ร้านทั่วไป)</div>
+                <div class="preset-sub" style="color:var(--accent-amber);">~650 kcal | P: 26g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('ข้าวกะเพราอกไก่ ไข่ดาวน้ำ (สั่งแบบคลีน)', 420, 35, 48, 9)">
+              <span style="font-size:22px;">🥗</span>
+              <div>
+                <div class="preset-title">กะเพราอกไก่ไข่ดาวน้ำ (คลีน)</div>
+                <div class="preset-sub" style="color:var(--accent-emerald);">~420 kcal | P: 35g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('ข้าวผัดหมู/ไก่ (ร้านตามสั่งทั่วไป)', 610, 22, 68, 24)">
+              <span style="font-size:22px;">🍚</span>
+              <div>
+                <div class="preset-title">ข้าวผัดหมู (ร้านทั่วไป)</div>
+                <div class="preset-sub" style="color:var(--accent-amber);">~610 kcal | P: 22g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('ข้าวมันไก่เนื้ออกไม่หนัง (ร้านทั่วไป)', 560, 26, 62, 18)">
+              <span style="font-size:22px;">🍗</span>
+              <div>
+                <div class="preset-title">ข้าวมันไก่ (ร้านทั่วไป)</div>
+                <div class="preset-sub" style="color:var(--accent-amber);">~560 kcal | P: 26g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('อกไก่นุ่ม 7-Eleven (1 ซอง)', 120, 24, 2, 2, 'มื้อย่อย')">
+              <span style="font-size:22px;">🏪</span>
+              <div>
+                <div class="preset-title">อกไก่นุ่ม 7-Eleven</div>
+                <div class="preset-sub" style="color:var(--accent-emerald);">120 kcal | P: 24g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('สุกี้น้ำอกไก่ ไม่กระเทียมเจียว', 280, 28, 25, 6, 'มื้อเย็น')">
+              <span style="font-size:22px;">🍲</span>
+              <div>
+                <div class="preset-title">สุกี้น้ำอกไก่คลีน</div>
+                <div class="preset-sub" style="color:var(--accent-emerald);">280 kcal | P: 28g</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fruits Presets Grid -->
+          <div id="preset-grid-fruit" class="food-preset-grid" style="display:none;">
+            <div class="preset-card" onclick="selectPresetFood('กล้วยหอม (1 ลูกกลาง)', 105, 1.3, 27, 0.3, 'มื้อย่อย')">
+              <span style="font-size:22px;">🍌</span>
+              <div>
+                <div class="preset-title">กล้วยหอม (1 ลูกกลาง)</div>
+                <div class="preset-sub" style="color:var(--accent-emerald);">105 kcal | C: 27g | P: 1.3g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('แอปเปิล (1 ผลกลาง 180g)', 95, 0.5, 25, 0.3, 'มื้อย่อย')">
+              <span style="font-size:22px;">🍎</span>
+              <div>
+                <div class="preset-title">แอปเปิล (1 ผลกลาง)</div>
+                <div class="preset-sub" style="color:var(--accent-emerald);">95 kcal | C: 25g | P: 0.5g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('แตงโม (1 จานเล็ก 150g)', 45, 0.9, 11, 0.2, 'มื้อย่อย')">
+              <span style="font-size:22px;">🍉</span>
+              <div>
+                <div class="preset-title">แตงโม (1 จานเล็ก 150g)</div>
+                <div class="preset-sub" style="color:var(--accent-emerald);">45 kcal | C: 11g | P: 0.9g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('ฝรั่ง (1 ผลกลาง 200g)', 70, 1.4, 17, 0.5, 'มื้อย่อย')">
+              <span style="font-size:22px;">🍈</span>
+              <div>
+                <div class="preset-title">ฝรั่ง (1 ผลกลาง 200g)</div>
+                <div class="preset-sub" style="color:var(--accent-emerald);">70 kcal | C: 17g | P: 1.4g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('ส้มสด (1 ผลกลาง 130g)', 60, 1.2, 15, 0.2, 'มื้อย่อย')">
+              <span style="font-size:22px;">🍊</span>
+              <div>
+                <div class="preset-title">ส้มสด (1 ผลกลาง)</div>
+                <div class="preset-sub" style="color:var(--accent-emerald);">60 kcal | C: 15g | P: 1.2g</div>
+              </div>
+            </div>
+
+            <div class="preset-card" onclick="selectPresetFood('มะละกอสุก (1 จานเล็ก 150g)', 60, 0.7, 15, 0.2, 'มื้อย่อย')">
+              <span style="font-size:22px;">🥭</span>
+              <div>
+                <div class="preset-title">มะละกอสุก (1 จานเล็ก)</div>
+                <div class="preset-sub" style="color:var(--accent-emerald);">60 kcal | C: 15g | P: 0.7g</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODE B: MANUAL MACRO INPUT -->
+      <div id="food-modal-pane-manual" style="display:none;">
+        <div style="background:var(--primary-glow); padding:8px 10px; border-radius:var(--radius-md); border:1px solid var(--primary); font-size:0.75rem; color:var(--text-main); margin-bottom:10px;">
+          💡 <strong>Smart AI Auto-Fill:</strong> หากคุณรู้ค่าเพียงบางช่อง (เช่น รู้เฉพาะแคลอรี หรือรู้เฉพาะโปรตีน) สามารถเว้นช่องที่ไม่รู้วางไว้ได้เลยครับ! AI จะช่วยวิเคราะห์และคำนวณเติมค่าสารอาหารที่เหลือให้อัตโนมัติ
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">ชื่ออาหาร / ขนม / ผลไม้</label>
+            <input type="text" id="manual-food-name" class="form-input" placeholder="เช่น 'เวย์โปรตีน 1 สกู๊ป', 'กล้วยน้ำว้า 2 ลูก'">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">มื้ออาหาร</label>
+            <select id="manual-food-slot" class="form-select">
+              <option value="เช้า">มื้อเช้า 🌅</option>
+              <option value="เที่ยง" selected>มื้อเที่ยง ☀️</option>
+              <option value="เย็น">มื้อเย็น 🌙</option>
+              <option value="มื้อย่อย">มื้อย่อย 🥑</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">พลังงาน (แคลอรี : kcal)</label>
+          <input type="number" id="manual-food-kcal" class="form-input" placeholder="เช่น 250" min="0">
+        </div>
+
+        <div class="grid-3" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+          <div class="form-group">
+            <label class="form-label">โปรตีน (g)</label>
+            <input type="number" id="manual-food-p" class="form-input" placeholder="เช่น 25" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">คาร์โบไฮเดรต (g)</label>
+            <input type="number" id="manual-food-c" class="form-input" placeholder="เช่น 30" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">ไขมัน (g)</label>
+            <input type="number" id="manual-food-f" class="form-input" placeholder="เช่น 5" min="0">
+          </div>
+        </div>
+
+        <button class="btn-primary" style="margin-top:12px;" onclick="addManualFoodMeal()">+ บันทึกแคลอรี & สารอาหาร</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 3: EXPORTER TEXT -->
+  <div class="modal-overlay" id="modal-export">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">📋 สรุปข้อความ Mobile Dashboard</div>
+        <button class="btn-icon" onclick="closeModal('modal-export')">✕</button>
+      </div>
+
+      <textarea id="export-text-area" class="raw-text-box" readonly></textarea>
+
+      <button class="btn-primary" style="margin-top:10px;" onclick="copyDashboardText()">
+        <span>📋</span> คัดลอกข้อความ (Copy Text)
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 4: SCIENTIFIC REFERENCES & DATA SOURCES -->
+  <div class="modal-overlay" id="modal-references">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">🔬 แหล่งอ้างอิงทางวิทยาศาสตร์ (Scientific References)</div>
+        <button class="btn-icon" onclick="closeModal('modal-references')">✕</button>
+      </div>
+
+      <div style="font-size:0.82rem; line-height:1.6; color:var(--text-main);">
+        <p style="margin-bottom:12px; color:var(--text-sub);">
+          ระบบคำนวณโภชนาการและพลังงานของ <strong>JavisCoach AI</strong> ใช้องค์ความรู้และสูตรคำนวณมาตรฐานทางการแพทย์และวิทยาศาสตร์การกีฬาที่เป็นยอมรับในระดับสากล:
+        </p>
+
+        <div style="background:var(--bg-subcard); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:10px;">
+          <h4 style="color:var(--primary); font-size:0.85rem; margin-bottom:4px;">1. สูตรคำนวณ BMR (Mifflin-St Jeor Equation, 1990)</h4>
+          <p style="color:var(--text-sub); font-size:0.78rem;">
+            • <strong>อ้างอิง:</strong> <em>American Journal of Clinical Nutrition (Am J Clin Nutr. 1990;51:241-247)</em><br>
+            • <strong>การยอมรับ:</strong> สมาคมโภชนาการและการกำหนดอาหารสหรัฐฯ (Academy of Nutrition and Dietetics - AND) และวิทยาลัยเวชศาสตร์การกีฬาอเมริกัน (ACSM) ให้การยอมรับว่าเป็นสูตรคำนวณ BMR ที่มีความแม่นยำสูงที่สุดสำหรับคนทั่วไปในปัจจุบัน<br>
+            • <strong>ชาย:</strong> 10 × น้ำหนัก(กก.) + 6.25 × ส่วนสูง(ซม.) - 5 × อายุ(ปี) + 5<br>
+            • <strong>หญิง:</strong> 10 × น้ำหนัก(กก.) + 6.25 × ส่วนสูง(ซม.) - 5 × อายุ(ปี) - 161
+          </p>
+        </div>
+
+        <div style="background:var(--bg-subcard); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:10px;">
+          <h4 style="color:var(--primary); font-size:0.85rem; margin-bottom:4px;">2. ค่าตัวคูณกิจกรรม TDEE (WHO / FAO PAL Multipliers)</h4>
+          <p style="color:var(--text-sub); font-size:0.78rem;">
+            • <strong>อ้างอิง:</strong> <em>World Health Organization (WHO Technical Report Series 935: Human Energy Requirements)</em><br>
+            • กำหนดค่า Physical Activity Level (PAL) ตั้งแต่ 1.2 (นั่งทำงานเป็นหลัก), 1.375 (ออกกำลังกายเบา), 1.55 (ปานกลาง), 1.725 (หนัก) ตามมาตรฐานองค์การอนามัยโลก
+          </p>
+        </div>
+
+        <div style="background:var(--bg-subcard); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:10px;">
+          <h4 style="color:var(--primary); font-size:0.85rem; margin-bottom:4px;">3. ฐานข้อมูลคุณค่าทางโภชนาการอาหารไทย (Thai Food Database)</h4>
+          <p style="color:var(--text-sub); font-size:0.78rem;">
+            • <strong>อ้างอิง:</strong> <em>ตารางแสดงคุณค่าทางโภชนาการของอาหารไทย โดย สถาบันโภชนาการ มหาวิทยาลัยมหิดล (INMU) และ สำนักโภชนาการ กรมอนามัย กระทรวงสาธารณสุข</em><br>
+            • ค่าพลังงาน (kcal) และสารอาหารหลัก โปรตีน/คาร์บ/ไขมัน ของอาหารไทยและสินค้าเซเว่นฯ ได้รับการอ้างอิงจากฐานข้อมูลอาหารไทยมาตรฐาน
+          </p>
+        </div>
+
+        <div style="background:var(--bg-subcard); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-bottom:12px;">
+          <h4 style="color:var(--primary); font-size:0.85rem; margin-bottom:4px;">4. สัดส่วนโปรตีนและสารอาหารหลัก (ISSN Position Stand)</h4>
+          <p style="color:var(--text-sub); font-size:0.78rem;">
+            • <strong>อ้างอิง:</strong> <em>International Society of Sports Nutrition (ISSN)</em><br>
+            • แนะนำโปรตีน 1.6 - 2.2 กรัม/น้ำหนักตัว 1 กก./วัน สำหรับผู้ที่ออกกำลังกายเพื่อการสร้างกล้ามเนื้อและลดไขมันอย่างปลอดภัย
+          </p>
+        </div>
+
+        <button class="btn-primary" onclick="closeModal('modal-references')">ตกลง เข้าใจแล้ว</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: EXERCISE POSTURE GUIDE -->
+  <div class="modal-overlay" id="modal-exercise-guide">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title" id="ex-guide-title">🖼️ ตัวอย่างท่าออกกำลังกาย</div>
+        <button class="btn-icon" onclick="closeModal('modal-exercise-guide')">✕</button>
+      </div>
+
+      <div id="ex-guide-body" style="font-size:0.85rem; line-height:1.6; color:var(--text-main);">
+        <!-- Populated dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 6: IMAGE FULLSCREEN LIGHTBOX -->
+  <div class="modal-overlay" id="modal-image-lightbox" onclick="closeModal('modal-image-lightbox')" style="z-index:9999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px);">
+    <div style="position:relative; max-width:92vw; max-height:92vh; display:flex; flex-direction:column; align-items:center; justify-content:center;" onclick="event.stopPropagation();">
+      <button onclick="closeModal('modal-image-lightbox')" style="position:absolute; top:-44px; right:0; background:rgba(255,255,255,0.25); color:#fff; border:1px solid rgba(255,255,255,0.4); border-radius:50%; width:38px; height:38px; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px);">✕</button>
+      <img id="lightbox-image" src="" alt="Full Screen Exercise Guide" style="max-width:100%; max-height:80vh; object-fit:contain; border-radius:var(--radius-lg); box-shadow:0 10px 30px rgba(0,0,0,0.5); border:2px solid var(--primary);">
+      <div id="lightbox-caption" style="color:#fff; margin-top:12px; font-weight:600; text-align:center; font-size:0.9rem; text-shadow:0 2px 4px rgba(0,0,0,0.9);">🔍 แตะที่ใดก็ได้หรือปุ่ม ✕ เพื่อปิด</div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-notification" class="toast">
+    <span>💡</span>
+    <span class="toast-msg">อัปเดตเรียบร้อย</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
